@@ -1,8 +1,18 @@
-import {Table} from "./table"
+import {Table} from "./js/table"
 import axios from "axios"
 import GoldenLayout from "golden-layout"
+import {Route} from "./js/route"
+import {Router} from "./js/router"
 
 (function() {
+    function init() {
+        const router = new Router([
+            new Route('tablePage', 'tablePage.html', true),
+            new Route('testPage', 'testPage.html', true)
+        ])
+    }
+    init()
+
     const {search} = window.location
     const [page, pageNum] = search.split("=")
     const pageSize = 5
@@ -62,10 +72,5 @@ import GoldenLayout from "golden-layout"
         }
     });
     myLayout.init()
-
-
-
-
-
 })()
 
