@@ -71,6 +71,6 @@ import {Router} from "./js/router"
             container.getElement().html( '<h2 style="color:deepskyblue">' + componentState.label + '</h2>' )
         }
     });
-    myLayout.init()
+    // myLayout.init()
 })()
 
