@@ -1,14 +1,13 @@
-const webpack = require("webpack");
-const path = require("path");
+const path = require('path')
 
 module.exports = {
-    mode: "development",
-    entry: "./app.js",
-    devtool: "source-map",
+    mode: 'development',
+    entry: './app.js',
+    devtool: 'source-map',
     output: {
-        path: path.resolve(__dirname, "dist"),
-        publicPath: "/dist/",
-        filename: "bundle.js"
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/dist/',
+        filename: 'bundle.js'
     },
     module: {
         rules: [
@@ -17,11 +16,17 @@ module.exports = {
                 include: path.resolve(__dirname),
                 exclude: /(node_modules)|(dist)/,
                 use: {
-                    loader: "babel-loader",
+                    loader: 'babel-loader',
                     options: {
-                        presets: ["@babel/preset-env"]
+                        presets: ['@babel/preset-env']
                     }
                 }
+            },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                loader: 'eslint-loader',
+                exclude: /(node_modules)/
             }
         ]
     }
