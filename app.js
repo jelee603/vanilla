@@ -1,4 +1,5 @@
 import { Table } from './js/table'
+import { Chart } from './js/chart'
 import axios from 'axios'
 import GoldenLayout from 'golden-layout'
 import { Route } from './js/route'
@@ -6,7 +7,8 @@ import { Router } from './js/router'
 
 const router = new Router([
     new Route('tablePage', 'tablePage.html', true, tableInit),
-    new Route('testPage', 'testPage.html', true)
+    new Route('testPage', 'testPage.html', true),
+    new Route('chartPage', 'chartPage.html', true, chartInit)
 ])
 
 function tableInit () {
@@ -79,4 +81,9 @@ function tableInit () {
         }
     })
     myLayout.init()
+}
+
+
+function chartInit () {
+    new Chart()
 }
