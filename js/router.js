@@ -36,13 +36,6 @@ Router.prototype = {
                     route.executeInitCallback()
                 }
             }
-        } else {
-            // for (let i = 0, length = r.length; i < length; i++) {
-            //     const route = r[i]
-            //     if (route.default) {
-            //         scope.goToRoute(route.htmlName)
-            //     }
-            // }
         }
     },
     goToRoute: function (htmlName) {
