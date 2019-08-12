@@ -83,7 +83,7 @@ function tableInit () {
     myLayout.init()
 }
 
-
 function chartInit () {
-    new Chart()
+    const chart = new Chart()
+    chart.init()
 }
