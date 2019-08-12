@@ -32,23 +32,27 @@ Router.prototype = {
                 const route = r[i]
                 if (route.isActiveRoute(window.location.href.substr(1))) {
                     window.myLayout && window.myLayout.destroy()
-                    scope.goToRoute(route.htmlName)
-                    route.executeInitCallback()
+                    scope.goToRoute(route.htmlName).then(() => {
+                        route.executeInitCallback()
+                    })
                 }
             }
         }
     },
     goToRoute: function (htmlName) {
-        (function (scope) {
-            const url = 'views/' + htmlName
-            const xhttp = new XMLHttpRequest()
-            xhttp.onreadystatechange = function () {
-                if (this.readyState === 4 && this.status === 200) {
-                    scope.rootElem.innerHTML = this.responseText
+        return new Promise((resolve, reject) => {
+            (function (scope) {
+                const url = 'views/' + htmlName
+                const xhttp = new XMLHttpRequest()
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        scope.rootElem.innerHTML = this.responseText
+                        resolve()
+                    }
                 }
-            }
-            xhttp.open('GET', url, true)
-            xhttp.send()
-        })(this)
+                xhttp.open('GET', url, true)
+                xhttp.send()
+            })(this)
+        })
     }
 }

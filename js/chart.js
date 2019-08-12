@@ -2,9 +2,6 @@ import echarts from 'echarts'
 import moment from 'moment'
 
 export class Chart {
-    constructor () {
-
-    }
     init () {
         this.createChart()
     }
