@@ -8,7 +8,8 @@ import { Router } from './js/router'
 const router = new Router([
     new Route('tablePage', 'tablePage.html', true, tableInit),
     new Route('testPage', 'testPage.html', true),
-    new Route('chartPage', 'chartPage.html', true, chartInit)
+    new Route('chartPage', 'chartPage.html', true, chartInit),
+    new Route('gamePage', 'gamePage.html', true)
 ])
 
 function tableInit () {

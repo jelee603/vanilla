@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>GameDev Canvas Workshop</title>
+    <style>
+        * {padding: 0; margin: 0;}
+        canvas { background: #eee; display: block; margin: 0 auto;}
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="480" height="320"></canvas>
+    <script>
+        /**
+         * 충돌 감지 방법:
+         * 공을 그리는 매 프레임마다 볼이 상단에 닿았는지를 확인한다.
+         * 닿았다면 움직이는 방향을 바꾸어 캔버스에 그려준다.
+         *
+         */
+        const canvas = document.getElementById("myCanvas")
+        const ctx = canvas.getContext("2d")
+        const ballRadius = 10 // 충돌 감지
+        const paddleHeight = 10
+        const paddleWidth = 75
+        let dy = -2
+        let dx = 2 // 매 프레임마다 더할 가장 작은 값 (2px)
+        let x = canvas.width / 2
+        let y = canvas.height - 30
+        let rightPressed = false
+        let leftPressed = false
+        let paddleX = (canvas.width - paddleWidth) / 2
+
+        function keyDownHandler(e) {
+            if (e.keyCode === 39) { // 오른쪽
+                rightPressed = true
+            } else if (e.keyCode === 37) { //왼쪽
+                leftPressed = true
+            }
+        }
+
+        function keyUpHandler(e) {
+            if (e.keyCode === 39) {
+                rightPressed = false
+            } else if(e.keyCode == 37) {
+                leftPressed = false
+            }
+        }
+
+        function drawPaddle() {
+            ctx.beginPath()
+            ctx.rect(paddleX, canvas.height - paddleHeight, paddleWidth, paddleHeight)
+            ctx.fillStyle = "#0095DD"
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function drawBall() {
+            ctx.beginPath()
+            ctx.arc(x, y, ballRadius, 0, Math.PI * 2)
+            ctx.fillStyle = "#0095DD"
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height) // 다음 프레임 전에 캔버스 지우기
+            drawBall()
+            drawPaddle()
+
+            // 원의 둘레 기준으로 계산해야 하기 때문에 ballRadius 추가
+            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+                dy = -dy; // 상단과 상단 모서리에서 방향 변경
+            }
+
+            if (x + dx > canvas.width - ballRadius || x + dx < ballRadius ) {
+                dx = -dx // 좌우에서 방향 변경
+            }
+
+            /**
+             * paddle 이동
+             *
+             * 렌더링이 될때마다 방향키가 눌렸는지를 확인한다
+             * paddle 이 캔버스 밖으로 나가는 것을 방지한다.
+             */
+            if (rightPressed && paddleX < canvas.width - paddleWidth) {
+                paddleX += 7
+            } else if (leftPressed && paddleX > 0) {
+                paddleX -= 7
+            }
+
+            x += dx
+            y += dy
+        }
+
+        document.addEventListener("keydown", keyDownHandler, false)
+        document.addEventListener("keyup", keyUpHandler, false)
+        setInterval(draw, 10) // 반복 (10밀리초)
+
+
+        // ctx.beginPath()
+        // ctx.rect(20, 40, 50, 50)
+        // ctx.fillStyle = "#ff0000"
+        // ctx.fill()
+        // ctx.closePath()
+        //
+        // ctx.beginPath()
+        // ctx.arc(240, 160, 20, 0, Math.PI * 2, false)
+        // ctx.fillStyle = "green"
+        // ctx.fill()
+        // ctx.closePath()
+        //
+        // ctx.beginPath()
+        // ctx.rect(160, 10, 100, 40)
+        // ctx.strokeStyle = "rgba(0, 0, 255, 0.5)"
+        // ctx.stroke()
+        // ctx.closePath()
+
+    </script>
+</body>
+</html>
