@@ -22,6 +22,14 @@
         const ballRadius = 10 // 충돌 감지
         const paddleHeight = 10
         const paddleWidth = 75
+        const brickRowCount = 3 // 벽돌 값
+        const brickColumnCount = 5
+        const brickWidth = 75
+        const brickHeight = 20
+        const brickPadding = 10
+        const brickOffsetTop = 30
+        const brickOffsetLeft = 30
+        const bricks = []
         let dy = -2
         let dx = 2 // 매 프레임마다 더할 가장 작은 값 (2px)
         let x = canvas.width / 2
@@ -29,6 +37,16 @@
         let rightPressed = false
         let leftPressed = false
         let paddleX = (canvas.width - paddleWidth) / 2
+
+        for (let c = 0; c < brickColumnCount; c++) { // 행과 열을 반복하면서 새로운 벽돌을 생성한다.
+            bricks[c] = []
+            for (let r = 0; r < brickRowCount; r++) {
+                bricks[c][r] = {x: 0, y: 0}
+            }
+        }
+
+        document.addEventListener("keydown", keyDownHandler, false)
+        document.addEventListener("keyup", keyUpHandler, false)
 
         function keyDownHandler(e) {
             if (e.keyCode === 39) { // 오른쪽
@@ -62,14 +80,39 @@
             ctx.closePath()
         }
 
+        function drawBricks() {
+            for (let c = 0; c < brickColumnCount; c++) {
+                for (let r = 0; r < brickRowCount; r++) {
+                    const brickX = (c * (brickWidth + brickPadding)) + brickOffsetLeft // 오프셋 값 만큼의 거리를 둔 상태로 벽돌을 그린다.
+                    const brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop
+                    bricks[c][r].x = brickX
+                    bricks[c][r].y = brickY
+
+                    ctx.beginPath()
+                    ctx.rect(brickX, brickY, brickWidth, brickHeight) // 캔버스에 brickWidth, brickHeight 크기의 벽돌을 그린다.
+                    ctx.fillStyle = "#0095DD"
+                    ctx.fill()
+                    ctx.closePath()
+                }
+            }
+        }
+
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height) // 다음 프레임 전에 캔버스 지우기
+            drawBricks()
             drawBall()
             drawPaddle()
 
             // 원의 둘레 기준으로 계산해야 하기 때문에 ballRadius 추가
-            if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+            if (y + dy < ballRadius) {
                 dy = -dy; // 상단과 상단 모서리에서 방향 변경
+            } else if (y + dy > canvas.height - ballRadius) { // 하단으로 충돌하면 게임오버 상태
+                if (x > paddleX && x < paddleX + paddleWidth) { // 패들의 안쪽에 있으면 공을 튕겨낸다.
+                    dy = -dy;
+                } else {
+                    alert("GAME OVER")
+                    document.location.reload()
+                }
             }
 
             if (x + dx > canvas.width - ballRadius || x + dx < ballRadius ) {
@@ -92,29 +135,7 @@
             y += dy
         }
 
-        document.addEventListener("keydown", keyDownHandler, false)
-        document.addEventListener("keyup", keyUpHandler, false)
         setInterval(draw, 10) // 반복 (10밀리초)
-
-
-        // ctx.beginPath()
-        // ctx.rect(20, 40, 50, 50)
-        // ctx.fillStyle = "#ff0000"
-        // ctx.fill()
-        // ctx.closePath()
-        //
-        // ctx.beginPath()
-        // ctx.arc(240, 160, 20, 0, Math.PI * 2, false)
-        // ctx.fillStyle = "green"
-        // ctx.fill()
-        // ctx.closePath()
-        //
-        // ctx.beginPath()
-        // ctx.rect(160, 10, 100, 40)
-        // ctx.strokeStyle = "rgba(0, 0, 255, 0.5)"
-        // ctx.stroke()
-        // ctx.closePath()
-
     </script>
 </body>
 </html>
