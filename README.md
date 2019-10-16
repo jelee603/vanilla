@@ -3,7 +3,7 @@
 $ npm install
 ```
 
-## Qick Start
+## Quick Start
 ``` js
 $ npm run dev
 ```
