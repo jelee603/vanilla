@@ -1,10 +1,10 @@
-#### Installation
+## Installation
 ``` js
-npm install
+$ npm install
 ```
 
-#### Run
+## Qick Start
 ``` js
-npm run dev
-http://localhost:8080/
+$ npm run dev
 ```
+View the website at: http://localhost:8080
